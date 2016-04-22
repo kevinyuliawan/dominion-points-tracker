@@ -1,5 +1,5 @@
 (function($, window, document) {
-	var targets = ['province', 'duchy', 'estate', 'gardens', 'cards'];
+	var targets = ['province', 'duchy', 'estate', 'gardens', 'cards', 'curse'];
 	var buttons = ['minus', 'plus'];
 	var inputs = [];
 	var buttonTargets = [];
@@ -15,7 +15,8 @@
 	var pointsMap = {
 		'province': 6,
 		'duchy': 3,
-		'estate': 1
+		'estate': 1,
+		'curse': -1,
 	};
 
 	$(inputs.join(',')).change(function(){
@@ -25,16 +26,18 @@
 		}
 		var curPlayer, curCard, value, points, cards;
 		inputs.forEach((item, index, enumerable) => {
-			curPlayer = item[item.length - 1];
-			curCard = item.substring(1, item.length - 1);
-			quantity = Number($(item).val()) || 0;
-			if(curCard === 'province' || curCard === 'duchy' || curCard === 'estate'){
-				points = quantity * pointsMap[curCard];
-			}else if(curCard === 'gardens'){
-				cards = Number($('#cards'+curPlayer).val()) || 0;
-				points = Math.floor(cards/10) * quantity;
+			if($(item).length > 0){
+				curPlayer = item[item.length - 1];
+				curCard = item.substring(1, item.length - 1);
+				quantity = Number($(item).val()) || 0;
+				if(curCard === 'gardens'){
+					cards = Number($('#cards'+curPlayer).val()) || 0;
+					points = Math.floor(cards/10) * quantity;
+				}else if(curCard !== 'cards'){
+					points = quantity * pointsMap[curCard];
+				}
+				playerMap[curPlayer] += points;
 			}
-			playerMap[curPlayer] += points;
 		});
 
 		//update points inputs

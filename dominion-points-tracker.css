@@ -20,6 +20,10 @@ body{
 	padding:15px;
 }
 
+.input-row{
+	margin-top:20px;
+}
+
 @media(max-width:992px){
 	.player-hr{
 		display:block;
